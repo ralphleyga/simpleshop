@@ -1,0 +1,20 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <h2 class="text-center">Log In</h2>
+    <form class="col-md-5 bg-light" style="margin: 20px auto; padding: 20px;">
+        {% include 'frontend/form_field.html' with label='email' input_type='email' input_id='id_email' placeholder='email' %}
+
+        {% include 'frontend/form_field.html' with label='password' input_type='password' input_id='id_password' placeholder='password' %}
+
+        <div class="form-group row">
+          <div class="col-sm-9 offset-sm-3">
+            <button type="submit" class="btn btn-primary">Log In</button>
+          </div>
+        </div>
+      </form>
+</div>
+{% endblock %}

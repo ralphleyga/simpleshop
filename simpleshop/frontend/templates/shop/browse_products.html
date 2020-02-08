@@ -1,0 +1,23 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Browse Products{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <h2 class="text-center">Browse Products</h2>
+</div>
+<section class="row">
+    {% for product in products %}
+        {% include 'shop/product_summary.html' %}
+    {% empty %}
+        <p class="text-center col-md-12">No Products available.</p>
+    {% endfor %}
+</section>
+{% endblock %}
+
+
+{% block container %}
+    {% with nav='browse-products' %}
+    {{ block.super }}
+    {% endwith %}
+{% endblock %}
