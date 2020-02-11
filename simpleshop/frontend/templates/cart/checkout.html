@@ -1,0 +1,37 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    <h2>My Cart</h2>
+    {% for order_item in user_cart.orderitem_set.all %}
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-3">{{ order_item.item.title }}</div>
+        <div class="col-md-3">
+            Quatity: {{ order_item.quantity }}
+        </div>
+        <div class="col-md-3">
+            ${{ order_item.total_price }}
+        </div>
+    </div>
+    {% endfor %}
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+        <h2>Payment Method</h2>
+        <div class="row">
+            <div class="col-md-6">
+                {{ payment_form.payment_method }}
+            </div>
+        </div>
+
+        <h2>Shipping Address</h2>
+        <div class="row">
+            <div class="col-md-6">
+                {{ payment_form.address }}
+            </div>
+        </div><br/>
+
+        <button type="submit" class="btn btn-info">Place Order - ${{ user_cart.total_prices }}</button>
+    </form>
+{% endblock %}

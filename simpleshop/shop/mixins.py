@@ -2,6 +2,7 @@ from .models import (
         Order,
         OrderItem,
         Item,
+        Address,
         BAG
     )
 
@@ -27,3 +28,17 @@ class OrderMixin(object):
             order_item.cart = cart
             order_item.quantity = quantity
             order_item.save()
+
+
+class AddressMixin(object):
+    def default_address(self, user):
+        return Address.objects.get(user=user, default=True)
+    
+    def set_default_address(self, user, address_id):
+        addresses = Address.objects.filter(user=user).update(default=False)
+        address = Address.objects.get(user=user, id=address_id)
+        address.default = True
+        return address
+
+    def get_user_address(self, user):
+        return Address.objects.filter(user=user).order_by('-default')

@@ -3,16 +3,14 @@ from django.conf import settings
 
 BAG = 1
 CHECKOUT = 2
-PAID = 3
+PLACED_ORDER = 3
 CANCELED = 4
 
 ORDER_STATUS = (
     (BAG, 'Bag'),
-    (CHECKOUT, 'Checkout'),
-    (PAID, 'Paid'),
+    (PLACED_ORDER, 'Placed Order'),
     (CANCELED, 'Canceled'),
 )
-
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -58,12 +56,19 @@ class Address(models.Model):
     postal_code = models.CharField(max_length=100)
     default = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.full_address()
+
+    def full_address(self):
+        return f'{self.apartment_address}, {self.street_address}, {self.postal_code}'
+
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                 on_delete=models.CASCADE)
     address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS)
+    total_price = 0
 
     def total_items(self):
         """Total item in BAG
@@ -71,7 +76,14 @@ class Order(models.Model):
         total = 0
         for item in self.orderitem_set.all():
             total += item.quantity
+            self.total_price = float(self.total_price) + float(item.total_price)
         return total
+
+    def total_prices(self):
+        """Total item in BAG
+        """
+        self.total_items()
+        return float(self.total_price)
 
     def __str__(self):
         return str(self.id)
@@ -85,3 +97,12 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.item.price * self.quantity
+
+
+class OrderShippingUpdate(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.order.id

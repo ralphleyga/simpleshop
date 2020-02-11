@@ -15,6 +15,11 @@
         <a class="nav-link {% if nav == 'browse-products' %}active{% endif %}" href="{% url 'shop_browse_products' %}">Browse Products</a>
       </li>
       {% if request.user.is_authenticated %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">My Orders</a>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link bg-light" style="border-radius: 10px;" href="#">{{ request.user.email }}</a>
       </li>
@@ -28,7 +33,7 @@
       {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <a class="nav-link btn btn-info" href="#">Cart {{ cart }}</a> &nbsp;
+      <a class="nav-link btn btn-info" href="{% url 'cart' %}">Cart {{ cart }}</a> &nbsp;
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>

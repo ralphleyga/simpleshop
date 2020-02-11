@@ -6,7 +6,8 @@ from .models import (
     Item,
     OrderItem,
     Order,
-    Address
+    Address,
+    OrderShippingUpdate,
 )
 
 # Register your models here.
@@ -32,9 +33,12 @@ class OrderItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', )
+    list_display = ('id', 'status', 'user')
 
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('id', 'user')
+
+
+admin.site.register(OrderShippingUpdate)

@@ -1,0 +1,35 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    <form method="POST" action=".">
+        {{ user_cart_form.management_form }}
+        {% csrf_token %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success">Update Cart</button>
+            </div>
+        </div>
+        {% for order_item in user_cart_form %}
+        <div style="display: none">3
+            {{  order_item.item }}
+            {{  order_item.quantity }}
+            {{  order_item.id }}
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-3">{{ order_item.instance.item.title }}</div>
+            <div class="col-md-3">
+                Quatity: {{ order_item.quantity }}
+            </div>
+            <div class="col-md-3">
+                ${{ order_item.instance.total_price }}
+            </div>
+            <div class="col-md-3">
+                <label>Delete: {{ order_item.DELETE }}</label>
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+    <a href="{% url 'checkout' %}" class="btn btn-info">Checkout - ${{ user_cart.total_prices }}</a>
+{% endblock %}
