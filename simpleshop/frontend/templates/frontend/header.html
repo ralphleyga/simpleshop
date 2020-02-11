@@ -17,7 +17,7 @@
       {% if request.user.is_authenticated %}
 
       <li class="nav-item">
-        <a class="nav-link" href="#">My Orders</a>
+        <a class="nav-link" href="{% url 'my_orders' %}">My Orders</a>
       </li>
 
       <li class="nav-item">
@@ -33,7 +33,7 @@
       {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <a class="nav-link btn btn-info" href="{% url 'cart' %}">Cart {{ cart }}</a> &nbsp;
+      <a class="nav-link btn btn-info" href="{% url 'cart' %}">Cart {% if cart %}{{ cart }}{% endif %}</a> &nbsp;
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>

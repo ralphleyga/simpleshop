@@ -1,0 +1,28 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <h2 class="text-center">My Orders</h2>
+</div>
+
+{% for transaction in transactions %}
+    {% with transaction.order as order %}
+        <div class="row">
+            <div class="col-md-3">
+                <a href="#">{{ transaction.created_at }}</a>
+            </div>
+            <div class="col-md-4">
+                {{ order.total_items }} Item{{ order.total_items|pluralize }}
+            </div>
+            <div class="col-md-5">
+                ${{ order.total_prices }}
+            </div>
+        </div>
+    {% endwith %}
+{% empty %}
+<p class="text-center">No Orders</p>
+{% endfor %}
+
+{% endblock %}

@@ -18,8 +18,11 @@ from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
 
+from shop.views import MyOrdersTemplateView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('orders/', MyOrdersTemplateView.as_view(), name='my_orders'),
     path('', include('frontend.urls')),
     path('products/', include('shop.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

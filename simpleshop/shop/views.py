@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.forms import inlineformset_factory
 from asgiref.sync import async_to_sync, sync_to_async
 
-from payments.models import PAYMENT_METHOD
+from payments.models import PAYMENT_METHOD, Transaction
 from payments.forms import TransactionForm
 
 from .forms import OrderItemForm
@@ -114,3 +114,14 @@ class CheckoutTemplateView(AddressMixin, OrderMixin, TemplateView):
         return self.render_to_response(request, self.template_name, context.update({
             'payment_form': form
         }))
+
+
+class MyOrdersTemplateView(TemplateView):
+
+    template_name = 'shop/my_orders.html'
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'transactions': Transaction.objects.filter(order__user=self.request.user).order_by('-created_at')
+        }
+        return super().get_context_data(**context)
