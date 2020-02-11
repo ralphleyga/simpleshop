@@ -1,5 +1,6 @@
 import uuid
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -44,7 +45,7 @@ class BroweProductsTemplateView(TemplateView):
         return super().get_context_data(**context)
 
 
-class AddToCartView(OrderMixin, View):
+class AddToCartView(LoginRequiredMixin, OrderMixin, View):
 
     def post(self, request, **kwargs):
         quantity = request.POST.get('quantity', 1)
@@ -55,7 +56,7 @@ class AddToCartView(OrderMixin, View):
         return HttpResponseRedirect(reverse('shop_product_detail', kwargs={'product_id': item.product.id}))
 
 
-class CartTemplateView(OrderMixin, TemplateView):
+class CartTemplateView(LoginRequiredMixin, OrderMixin, TemplateView):
     template_name = 'cart/carts.html'
     formset_class = inlineformset_factory(Order, OrderItem, fields=['quantity', 'item', 'cart'], extra=0)
 
@@ -78,7 +79,7 @@ class CartTemplateView(OrderMixin, TemplateView):
         return HttpResponseRedirect(reverse('cart'))
 
 
-class CheckoutTemplateView(AddressMixin, OrderMixin, TemplateView):
+class CheckoutTemplateView(LoginRequiredMixin, AddressMixin, OrderMixin, TemplateView):
     template_name = 'cart/checkout.html'
     form_class = TransactionForm
 
@@ -116,7 +117,7 @@ class CheckoutTemplateView(AddressMixin, OrderMixin, TemplateView):
         }))
 
 
-class MyOrdersTemplateView(TemplateView):
+class MyOrdersTemplateView(LoginRequiredMixin, TemplateView):
 
     template_name = 'shop/my_orders.html'
 
