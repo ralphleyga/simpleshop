@@ -18,6 +18,8 @@ from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 from shop.views import (
     MyOrdersTemplateView,
     OrderDetailTemplateView
@@ -29,4 +31,9 @@ urlpatterns = [
     path('orders/<int:transaction_id>/', OrderDetailTemplateView.as_view(), name='order_detail'),
     path('', include('frontend.urls')),
     path('products/', include('shop.urls')),
+
+    # API Endpoints
+    path('api/token/', obtain_auth_token, name='obtain_auth_token'),
+    
+
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
