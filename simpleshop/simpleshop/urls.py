@@ -34,6 +34,7 @@ urlpatterns = [
 
     # API Endpoints
     path('api/token/', obtain_auth_token, name='obtain_auth_token'),
-    
+    path('api/', include('shop.api_urls')),
+
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
