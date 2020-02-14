@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 
 class ProductSummary extends Component {
@@ -15,7 +16,7 @@ class ProductSummary extends Component {
                     </p>
                     <p>$100-$400</p>
                     <div className="text-center">
-                        <a href="#" className="btn btn-info container-fluid">View</a>
+                        <Link to='/products/1/' className="btn btn-info container-fluid">View</Link>
                     </div>
                     </div>
                 </div>

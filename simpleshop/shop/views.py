@@ -106,8 +106,6 @@ class CheckoutTemplateView(LoginRequiredMixin, AddressMixin, OrderMixin, Templat
         context = super().get_context_data(**kwargs)
         order = self.user_cart(self.request.user)
 
-        import pdb; pdb.set_trace()
-
         if form.is_valid():
             instance = form.save(commit=False)
             instance.transaction_status = 1

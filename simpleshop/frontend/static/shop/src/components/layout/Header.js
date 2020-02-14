@@ -21,7 +21,7 @@ class Header extends Component {
                         <li className='nav-item'><a className='nav-link' href='#'>My Orders</a></li>
                         <li className='nav-item'><a className='nav-link' href='#'>My Address</a></li>
                         <li className='nav-item'>
-                            <a className='nav-link btn btn-info' href='#'>Cart 0</a>
+                            <Link className='nav-link btn btn-info' to='/cart/'>Cart 0</Link>
                         </li>
                     </ul>
 
