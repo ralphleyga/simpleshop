@@ -72,6 +72,8 @@ class Order(models.Model):
 
     def total_items(self):
         """Total item in BAG
+
+        TODO: to optimize using agregators
         """
         total = 0
         for item in self.orderitem_set.all():
@@ -81,6 +83,8 @@ class Order(models.Model):
 
     def total_prices(self):
         """Total item in BAG
+
+        TODO: to optimize using agregators
         """
         self.total_items()
         return float(self.total_price)
