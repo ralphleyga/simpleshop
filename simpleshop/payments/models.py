@@ -15,7 +15,7 @@ PAYMENT_METHOD = (
 
 TRANSACTION_STATUS = (
     (1, 'Pending'),
-    (2, 'Received'),
+    (2, 'Payment Received'),
     (3, 'Declined'),
 )
 

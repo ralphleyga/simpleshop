@@ -38,6 +38,7 @@ class AddressMixin(object):
         addresses = Address.objects.filter(user=user).update(default=False)
         address = Address.objects.get(user=user, id=address_id)
         address.default = True
+        address.save()
         return address
 
     def get_user_address(self, user):

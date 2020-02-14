@@ -3,26 +3,35 @@
 {% block title %}My Orders{% endblock %}
 
 {% block content %}
-<div class="col-md-12">
-    <h2 class="text-center">My Orders</h2>
-</div>
+    <div class="col-md-12">
+        <h2 class="text-center">My Orders</h2>
+    </div>
 
-{% for transaction in transactions %}
-    {% with transaction.order as order %}
-        <div class="row">
-            <div class="col-md-3">
-                <a href="#">{{ transaction.created_at }}</a>
-            </div>
-            <div class="col-md-4">
-                {{ order.total_items }} Item{{ order.total_items|pluralize }}
-            </div>
-            <div class="col-md-5">
-                ${{ order.total_prices }}
-            </div>
-        </div>
-    {% endwith %}
-{% empty %}
-<p class="text-center">No Orders</p>
-{% endfor %}
+    {% if transactions %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Number of Items</th>
+            <th>Status</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a href="{% url 'order_detail' transaction.id %}">{{ transaction.created_at|date:"D d M Y" }}</a></td>
+            <td>{{ transaction.order.total_items }}</td>
+            <td>{{ transaction.get_transaction_status_display }}</td>
+            <td>${{ transaction.price }}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+      {% else %}
+        <p class="text-center">No Orders</p>
+      {% endif %}
 
 {% endblock %}

@@ -21,7 +21,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link bg-light" style="border-radius: 10px;" href="#">{{ request.user.email }}</a>
+        <a class="nav-link bg-light" style="border-radius: 10px;" href="{% url 'address_list' %}">{{ request.user.email }}</a>
       </li>
       {% else %}
       <li class="nav-item">

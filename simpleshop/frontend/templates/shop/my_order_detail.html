@@ -1,0 +1,35 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <h1>Order: #{{ transaction.transaction_id }}</h1>
+    <h4>Total Price: ${{ transaction.price }}</h4>
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for order in transaction.order.orderitem_set.all %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'shop_product_detail' order.item.product.id %}">{{ order.item.title }}</a></td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.total_price }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Create Address{% endblock %}
+
+{% block content %}
+<div class="row col-md-12">
+    <h1>
+        {% if object %}
+            Update Address
+        {% else %}
+            Create Address
+        {% endif %}
+    </h1>
+</div>
+<div class="col-md-12">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Street Address</label>
+            {{ form.street_address }}
+        </div>
+        <div class="form-group">
+            <label>Apartment Address</label>
+            {{ form.apartment_address }}
+        </div>
+        <div class="form-group">
+            <label>Postal Code</label>
+            {{ form.postal_code }}
+        </div>
+        <div class="form-group">
+            <label>Set as Default Address</label>
+            {{ form.default }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

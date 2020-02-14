@@ -1,0 +1,23 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Manage Address{% endblock %}
+
+{% block content %}
+<div class="row col-md-12">
+    <h1>Address List</h1>
+</div>
+<div class="col-md-12">
+    <a href="{% url 'address_create' %}" class="btn btn-info">Create Address</a><br /><br />
+</div>
+<div class="col-md-12">
+    <ul class="list-group row">
+        {% for address in object_list %}
+            <li class="list-group-item">
+                {{ address.full_address }}
+                <a href="{% url 'address_update' address.id %}" class="btn btn-info">Edit</a>
+               <a href="{% url 'address_delete' address.id %}" class="btn btn-danger">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,7 +1,13 @@
 import uuid
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, View
+from django.views.generic import (
+    TemplateView,
+    View,
+    ListView,
+    CreateView,
+    UpdateView
+    )
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.forms import inlineformset_factory
@@ -13,6 +19,7 @@ from payments.forms import TransactionForm
 from .forms import OrderItemForm
 from .models import (
             PLACED_ORDER,
+            Address,
             Product,
             Item,
             Order,
@@ -126,3 +133,73 @@ class MyOrdersTemplateView(LoginRequiredMixin, TemplateView):
             'transactions': Transaction.objects.filter(order__user=self.request.user).order_by('-created_at')
         }
         return super().get_context_data(**context)
+
+
+class OrderDetailTemplateView(LoginRequiredMixin, TemplateView):
+
+    template_name = 'shop/my_order_detail.html'
+
+    def get_context_data(self, **kwargs):
+        transaction_id = self.kwargs['transaction_id']
+        transaction = Transaction.objects.get(id=transaction_id, order__user=self.request.user)
+
+        context = {
+            'transaction': transaction,
+        }
+        return super().get_context_data(**context)
+
+
+class AddressListTemplateView(LoginRequiredMixin, ListView):
+
+    template_name = 'shop/address_list.html'
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user).order_by('-default')
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'object_list': self.get_queryset()
+        }
+        return super().get_context_data(**context)
+
+
+class AddressCreateView(AddressMixin, LoginRequiredMixin, CreateView):
+    template_name = 'shop/address_form.html'
+    model = Address
+    fields = ['street_address', 'apartment_address', 'postal_code', 'default']
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.save()
+
+        if instance.default:
+            self.set_default_address(self.request.user, instance.id)
+
+        return HttpResponseRedirect(reverse('address_list'))
+
+
+class AddressUpdateView(AddressMixin, LoginRequiredMixin, UpdateView):
+    template_name = 'shop/address_form.html'
+    model = Address
+    fields = ['street_address', 'apartment_address', 'postal_code', 'default']
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.save()
+
+        if instance.default:
+            self.set_default_address(self.request.user, instance.id)
+
+        return HttpResponseRedirect(reverse('address_list'))
+
+
+class AddressDeleteView(LoginRequiredMixin, View):
+
+    def get(self, request, **kwargs):
+        address = Address.objects.get(id=self.kwargs.get('pk'), user=request.user)
+        address.delete()
+        return HttpResponseRedirect(reverse('address_list'))
