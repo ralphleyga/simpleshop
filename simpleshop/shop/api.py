@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .mixins import OrderMixin
@@ -11,13 +12,15 @@ from .serializers import (
     AddressSerializer,
     OrderSerializer,
     OrderItemSerializer,
-    CartSerializer
+    CartSerializer,
+    CategorySerializer
     )
 from .models import (
     Product,
     Address,
     Order,
     Item,
+    Category
     )
 
 
@@ -25,6 +28,7 @@ class BrowseProductsViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = (AllowAny,)
     filterset_fields = ['title', 'description']
 
 
@@ -53,3 +57,9 @@ class CartView(OrderMixin, viewsets.ViewSet):
         item = Item.objects.get(id=request.data.get('item'))
         self.add_to_cart(user=request.user, item=item, quantity=request.data.get('quantity'))
         return Response(serializer.data)
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (AllowAny,)

@@ -1,21 +1,26 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
 import Cover from './Cover'
-import ProductSummary from './ProductSummary'
+import ProductList from './ProductList'
 
 class Home extends Component {
     render() {
         return (
             <section>
                 <Cover />
-
                 <section className="row">
-                    <ProductSummary />
-                    <ProductSummary />
-                    <ProductSummary />
+                    <ProductList products={this.props.products.results} />
                 </section>
             </section>
         )
     }
 }
 
-export default Home
+const mapStateToProps = (state) => {
+    return {
+        products: state.productReducer.products
+    }
+}
+
+export default connect(mapStateToProps)(Home)

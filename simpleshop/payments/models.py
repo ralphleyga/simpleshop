@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 
+
 # Create your models here.
 COD = 1
 CREDIT_CARD = 2

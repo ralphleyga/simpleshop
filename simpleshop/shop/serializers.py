@@ -6,6 +6,7 @@ from .models import (
     Address,
     Order,
     OrderItem,
+    Category,
     )
 
 
@@ -58,3 +59,9 @@ class OrderSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.Serializer):
     item = serializers.IntegerField()
     quantity = serializers.IntegerField()
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

@@ -5,10 +5,12 @@ from .api import (
     AddressViewSet,
     OrderViewSet,
     CartView,
+    CategoryViewSet
     )
 
 router = routers.DefaultRouter()
 router.register(r'products', BrowseProductsViewSet)
+router.register(r'categories', CategoryViewSet)
 router.register(r'address', AddressViewSet)
 router.register(r'orders', OrderViewSet)
 
