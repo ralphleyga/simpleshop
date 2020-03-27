@@ -5,23 +5,25 @@ import { connect } from 'react-redux'
 
 class ProductDetail extends Component {
 
-    componentWillMount() {
-        console.log(this.props)
-    }
-
     render() {
-        console.log(this.props)
+
+        const {productID} = this.props.match.params
+        const {products} = this.props
+        const productItem = products ? (
+                products.find(product => {
+                return product.id === parseInt(productID)
+            })
+        ) : (
+            <p>Loading...</p>
+        )
 
         return (
             <section>
-                <ProductCarousel />
+                <ProductCarousel product={productItem}/>
                 <section className='jumbotron text-center bg-light'>
-                    <h1>Hello</h1>
+                    <h1>{productItem.title}</h1>
                     <div className='lear text-muted'>
-                    <p>Lorem ipsum dolor sit amet congue lacinia per massa vulputate. Mattis efficitur massa nibh conubia cubilia consequat metus aliquam a. Vehicula gravida torquent scelerisque nam proin. Mattis venenatis dui felis etiam elementum gravida. Dictumst eu magnis potenti placerat senectus cursus urna ligula.</p>
-
-                    <p>Elit feugiat risus nibh aenean cras. Torquent hendrerit netus nibh conubia rutrum. Magnis ante dapibus potenti duis dui aliquet suspendisse natoque vulputate. Congue blandit consequat semper etiam integer odio tempus.
-                    </p>
+                        {productItem.description}
                     </div>
                 </section>
 
@@ -32,7 +34,7 @@ class ProductDetail extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        products: state.productReducer.products,
+        products: state.productReducer.products.results,
     }
 }
 

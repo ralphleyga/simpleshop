@@ -14,34 +14,31 @@ function ImgSlide({...rest}) {
 class ProductCarousel extends Component {
 
     render() {
+        const { product } = this.props
+        console.log(product.items)
+
+        const itemList = product.items ? (
+            product.items.map(item => {
+                return (
+                    <Carousel.Item key={item.id}>
+                        <ImgSlide/>
+                        <Carousel.Caption>
+                        <h3>{item.title}</h3>
+                        <p>${item.price}</p>
+                        <button type="button" className="btn btn-info">Add to Cart</button>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                )
+            })
+        ) : (
+            <p>Loading...</p>
+        )
 
         return (
             <section className='pb-5'>
                 <Carousel>
-                    <Carousel.Item>
-                        <ImgSlide/>
-                        <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <ImgSlide/>
-                        <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-
-                    <Carousel.Item>
-                        <ImgSlide/>
-
-                        <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    </Carousel>
+                    {itemList}
+                </Carousel>
             </section>
         )
     }
