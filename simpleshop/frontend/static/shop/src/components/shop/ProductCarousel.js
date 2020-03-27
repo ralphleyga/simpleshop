@@ -23,7 +23,7 @@ class ProductCarousel extends Component {
                     <Carousel.Item key={item.id}>
                         <ImgSlide/>
                         <Carousel.Caption>
-                        <h3>{item.title}</h3>
+                        <b>{item.title}</b>
                         <p>${item.price}</p>
                         <button type="button" className="btn btn-info">Add to Cart</button>
                         </Carousel.Caption>
