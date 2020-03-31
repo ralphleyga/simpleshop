@@ -5,10 +5,8 @@ class ConfirmPayment extends Component {
     render() {
         return (
             <div className='col-md-12 text-center'>
-                <h1>Payment Confirmed</h1>
-                <p>You have placed your order.</p>
-
-                <Link className='btn btn-info' to='/products/'>Continue Shopping</Link>
+                <h1>Page not found</h1>
+                <p>The page you are trying to access is not available.  <Link className='btn btn-info' to='/'>Back to Home page.</Link></p>
             </div>
         )
     }

@@ -2,14 +2,22 @@ from django.db import models
 from django.conf import settings
 
 BAG = 1
-CHECKOUT = 2
-PLACED_ORDER = 3
-CANCELED = 4
+PLACED_ORDER = 2
+CANCELED = 3
 
 ORDER_STATUS = (
-    (BAG, 'Bag'),
+    (BAG, 'Cart'),
     (PLACED_ORDER, 'Placed Order'),
     (CANCELED, 'Canceled'),
+)
+
+PROCESS_STATUS = (
+    (1, 'pending'),
+    (2, 'confirm'),
+    (3, 'packaging'),
+    (4, 'pickup by logistic'),
+    (5, 'shipping'),
+    (6, 'delivered'),
 )
 
 class Category(models.Model):
@@ -68,6 +76,7 @@ class Order(models.Model):
                 on_delete=models.CASCADE)
     address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS)
+    process_status = models.IntegerField(choices=PROCESS_STATUS, blank=True, null=True)
     total_price = 0
 
     def total_items(self):

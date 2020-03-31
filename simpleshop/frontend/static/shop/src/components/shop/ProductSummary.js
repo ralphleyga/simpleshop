@@ -18,7 +18,7 @@ class ProductSummary extends Component {
                     </p>
                     <p>$100-$400</p>
                     <div className="text-center">
-                        <Link to={'' + product.id} className="btn btn-info container-fluid">View</Link>
+                        <Link to={'/products/' + product.id} className="btn btn-info container-fluid">View</Link>
                     </div>
                     </div>
                 </div>

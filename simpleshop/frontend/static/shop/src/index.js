@@ -10,6 +10,10 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 
+if (localStorage.getItem('token')) {
+    axios.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('token');
+}
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(

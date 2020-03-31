@@ -2,69 +2,88 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 import Search from './SearchNav'
 import { userLogout } from '../../actions/auth'
 
+
+const PrivateLink = ({ children, ...rest}) => {
+    const nav = rest.isLogin ? (
+        children
+    ) : (
+        null
+    )
+    return nav
+}
+
 class Header extends Component {
+    constructor(props) {
+        super(props)
+        this.handleDropMenu = this.handleDropMenu.bind(this)
+        this.handleLogout = this.handleLogout.bind(this)
+    }
+
+    handleDropMenu(e) {
+        console.log(this)
+    }
+
+    handleLogout(e) {
+        e.preventDefault()
+        this.props.userLogout()
+    }
 
     render() {
-        const handleLogout = event => {
-            event.preventDefault()
-            this.props.userLogout()
-        }
-
-        const mainNav = (
-                <>
-                <li className='nav-item'>
-                    <Link className='navbar-brand' to='/'>Shopping</Link>
-                </li>
-                <li className='nav-item'>
-                    <Link className='nav-link' to='/'>Home</Link>
-                </li>
-                <li className='nav-item'>
-                    <Link className='nav-link' to='/products/'>Browse Products</Link>
-                </li>
-                
-                <li className='nav-item'>
-                    <Link className='nav-link btn btn-info' to='/cart/'>Cart 0</Link>
-                </li>
-                </>
-        )
-
-        const externalNav = (
+        const { isLoggedIn } = this.props;
+        const externalNav = isLoggedIn ? ( null ): (
             <li className='nav-item'>
                 <Link to='/login/' className='nav-link'>Login</Link>
             </li>
         )
 
-        const loggedNav = (
-            <>
-                <li className='nav-item'>
-                        <Link className='nav-link' to='/my-orders/'>My Orders</Link>
-                </li>
-                <li className='nav-item'><a className='nav-link' href='#'>My Address</a></li>
-                <li className='nav-item'>
-                    <Link to='/logout/' className='nav-link' onClick={ handleLogout }>Log Out</Link>
-                </li>
-            </>
-        )
 
-        let activeNav = null
-        const { isLoggedIn } = this.props;
+        const mainNav = (
+                <>
+                    <li className='nav-item'>
+                        <Link className='navbar-brand' to='/'>Shopping</Link>
+                    </li>
+                    <li className='nav-item'>
+                        <Link className='nav-link' to='/'>Home</Link>
+                    </li>
+                    <li className='nav-item'>
+                        <Link className='nav-link' to='/products/'>Browse Products</Link>
+                    </li>
 
-        if (isLoggedIn ===true) {
-            activeNav = loggedNav
-        } else {
-            activeNav = externalNav
-        }
+                    <li className='nav-item'>
+                        <Link className='btn btn-info mr-1' to='/cart/'>Cart</Link>
+                    </li>
+                    
+                    <PrivateLink isLogin={isLoggedIn}>
+                        <li className='nav-items'>
+                            <Dropdown >
+                                <Dropdown.Toggle variant="success" className='' id="dropdown-basic">
+                                    My Account
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu onClick={this.handleDropMenu}>
+                                    <Dropdown.Item as={Link} to='/my-orders/'>My Orders</Dropdown.Item>
+
+                                    <Dropdown.Item as={Link} to='/my-address/'>My Address</Dropdown.Item>
+
+                                    <Link to='/logout/' className='dropdown-item' onClick={ this.handleLogout }>Log Out</Link>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </li>
+                    </PrivateLink>
+                </>
+            )
 
         return (
             <div className='navbar navbar-expand-lg navbar-light'>
                 <div className='collapse navbar-collapse'>
                     <ul className='navbar-nav mr-auto'>
                         { mainNav }
-                        { activeNav }
+                        { externalNav }
                     </ul>
                     <Search />
                 </div>

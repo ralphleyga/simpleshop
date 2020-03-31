@@ -5,7 +5,8 @@ from .api import (
     AddressViewSet,
     OrderViewSet,
     CartView,
-    CategoryViewSet
+    CategoryViewSet,
+    CheckoutView,
     )
 
 router = routers.DefaultRouter()
@@ -15,5 +16,6 @@ router.register(r'address', AddressViewSet)
 router.register(r'orders', OrderViewSet)
 
 router.register(r'cart', CartView, basename='cart')
+router.register(r'checkout', CheckoutView, basename='checkout')
 
 urlpatterns = router.urls

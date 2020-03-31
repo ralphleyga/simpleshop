@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Carousel from 'react-bootstrap/Carousel'
+import Image from 'react-bootstrap/Image'
+import { connect } from 'react-redux'
+import { addCart } from '../../actions/products'
 
 
 function ImgSlide({...rest}) {
@@ -13,19 +16,26 @@ function ImgSlide({...rest}) {
 
 class ProductCarousel extends Component {
 
+    constructor(props) {
+        super(props)
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick(item) {
+        this.props.addCart(item)
+    }
+
     render() {
         const { product } = this.props
-        console.log(product.items)
-
         const itemList = product.items ? (
             product.items.map(item => {
                 return (
                     <Carousel.Item key={item.id}>
                         <ImgSlide/>
                         <Carousel.Caption>
-                        <b>{item.title}</b>
+                        <strong>{item.title}</strong>
                         <p>${item.price}</p>
-                        <button type="button" className="btn btn-info">Add to Cart</button>
+                        <button type="button" className="btn btn-info" onClick={() => this.handleClick(item)}>Add to Cart</button>
                         </Carousel.Caption>
                     </Carousel.Item>
                 )
@@ -44,4 +54,8 @@ class ProductCarousel extends Component {
     }
 }
 
-export default ProductCarousel
+const mapDispatchToProps = dispatch => ({
+    addCart: item => dispatch(addCart(item))
+})
+
+export default connect(null, mapDispatchToProps)(ProductCarousel)

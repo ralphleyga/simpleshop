@@ -1,21 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { userLoginFetch } from '../../actions/auth'
 
 class Login extends Component {
-    state = {
-        username: "",
-        password: "",
-    };
+    constructor(props) {
+        super(props)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.state = {
+            username: "",
+            password: "",
+        };
+    }
 
-    handleSubmit = event => {
-        event.preventDefault();
+    handleSubmit(e) {
+        e.preventDefault()
         this.props.userLoginFetch(this.state)
     }
 
-    handleChange = event => {
+    handleChange(e) {
         this.setState({
-            [event.target.name]: event.target.value
+            [e.target.name]: e.target.value
         });
     }
 
@@ -32,7 +38,7 @@ class Login extends Component {
     render() {
         // redirect to Home if isLoggedI is true
         if (this.props.auth.isLoggedIn === true) {
-            this.props.history.push('/')
+            return (<Redirect to='/' />)
         }
 
         return (
@@ -48,7 +54,7 @@ class Login extends Component {
 
                         <div className="form-group">
                             <label>Password</label>
-                            <input type="password" name='password' className="form-control" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+                            <input type="password" name='password' className="form-control" placeholder="Password" value={this.state.password} onChange={this.handleChange} autoComplete="on"/>
                         </div>
 
                         <div className="form-group">

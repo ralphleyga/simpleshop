@@ -29,6 +29,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
+    full_address = serializers.SerializerMethodField()
+    
+    def get_full_address(self, instance):
+        return instance.full_address()
 
     class Meta:
         model = Address
@@ -38,6 +42,7 @@ class AddressSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source='item.title', read_only=True)
     product_id = serializers.IntegerField(source='item.product.id')
+    price = serializers.FloatField(source='item.price')
 
     class Meta:
         model = OrderItem
@@ -46,6 +51,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     order_items = serializers.SerializerMethodField()
+    total_price = serializers.SerializerMethodField()
+
+    def get_total_price(self, instance):
+        return instance.total_prices()
 
     def get_order_items(self, instance):
         serializer = OrderItemSerializer(instance.orderitem_set.select_related('item').all(), many=True)
@@ -59,6 +68,11 @@ class OrderSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.Serializer):
     item = serializers.IntegerField()
     quantity = serializers.IntegerField()
+
+
+class CheckoutSerializer(serializers.Serializer):
+    address = serializers.IntegerField()
+    payment_method = serializers.IntegerField()
 
 
 class CategorySerializer(serializers.ModelSerializer):

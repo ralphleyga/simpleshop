@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 from .mixins import OrderMixin
 
@@ -13,14 +13,15 @@ from .serializers import (
     OrderSerializer,
     OrderItemSerializer,
     CartSerializer,
-    CategorySerializer
+    CategorySerializer,
+    CheckoutSerializer
     )
 from .models import (
     Product,
     Address,
     Order,
     Item,
-    Category
+    Category,
     )
 
 
@@ -40,14 +41,6 @@ class AddressViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(user=self.request.user)
 
 
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-    def get_queryset(self, **kwargs):
-        return self.queryset.filter(user=self.request.user)
-
-
 class CartView(OrderMixin, viewsets.ViewSet):
 
     serializer_class = CartSerializer
@@ -55,8 +48,27 @@ class CartView(OrderMixin, viewsets.ViewSet):
     def create(self, request, **kwargs):
         serializer = CartSerializer(request.data)
         item = Item.objects.get(id=request.data.get('item'))
-        self.add_to_cart(user=request.user, item=item, quantity=request.data.get('quantity'))
+        cart = self.add_to_cart(user=request.user, item=item, quantity=request.data.get('quantity'))
+        serializer = OrderSerializer(cart)
         return Response(serializer.data)
+
+
+class CheckoutView(OrderMixin, viewsets.ViewSet):
+    serializer_class = CheckoutSerializer
+    
+    def create(self, request, **kwargs):
+        cart = self.checkout(request.user, **request.data)
+        order_serializer = OrderSerializer(cart)
+        return Response(order_serializer.data)
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    filterset_fields = ['status']
+
+    def get_queryset(self, **kwargs):
+        return self.queryset.filter(user=self.request.user)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

@@ -9,6 +9,8 @@ export const userLoginFetch = user => {
                     localStorage.setItem('isLoggedIn', true)
                     dispatch({type: 'LOGIN_SUCCESS', payload: true })
                     dispatch({type: 'LOGIN_ERROR', payload: false})
+                    // reload to have new session
+                    window.location.reload()
                 })
                 .catch((err) => {
                     dispatch({type: 'LOGIN_ERROR', payload: true})

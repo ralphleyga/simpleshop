@@ -13,18 +13,19 @@ import MyOrders from './components/shop/MyOrders'
 import OrderDetail from './components/shop/OrderDetail'
 import Checkout from './components/shop/Checkout'
 import ConfirmPayment from './components/shop/ConfirmPayment'
+import NoMatch from './components/shop/NoMatch'
 import { connect } from 'react-redux'
-import { productFetch, categoryFetch } from './actions/products'
+import { productFetch, categoryFetch, ordersFetch, addressFetch} from './actions/products'
 
 
-function PrivateRoute({ children, ...rest }) {
+const PrivateRoute = ({ children, ...rest }) => {
     // redirect to login
     return (
         <Route
         {...rest}
         render={({ location }) =>
             localStorage.getItem('isLoggedIn') ? (
-            children
+                children
           ) : (
             <Redirect to='/login/' />
           )
@@ -37,6 +38,8 @@ class App extends Component {
     componentWillMount() {
         this.props.productFetch()
         this.props.categoryFetch()
+        this.props.ordersFetch()
+        this.props.addressFetch()
     }
 
     render() {
@@ -45,6 +48,7 @@ class App extends Component {
             <div className="container">
                 <Router history={history}>
                     <Header />
+
                     <Switch>
                         <Route exact path='/' component={Home} />
                         <Route exact path='/products/' component={BrowseProducts} />
@@ -70,6 +74,10 @@ class App extends Component {
                         </PrivateRoute>
 
                         <Route exact path='/confirm-payment/' component={ConfirmPayment} />
+
+                        <Route path='*'>
+                            <NoMatch />
+                        </Route>
                         
                     </Switch>
 
@@ -83,13 +91,16 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: state.auth,
+        product: state.productReducer
     }
 }
 
 const mapDispatchToProps = dispatch => ({
     productFetch: () => dispatch(productFetch()),
-    categoryFetch: () => dispatch(categoryFetch())
+    categoryFetch: () => dispatch(categoryFetch()),
+    ordersFetch: () => dispatch(ordersFetch()),
+    addressFetch: () => dispatch(addressFetch())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
