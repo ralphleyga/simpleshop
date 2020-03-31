@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import CartItem from './CartItem'
 import { connect } from 'react-redux'
+import { checkoutCart } from '../../actions/products'
 import Table from 'react-bootstrap/Table'
 
 class Checkout extends Component {
@@ -18,10 +19,12 @@ class Checkout extends Component {
     handleSubmit(e) {
         e.preventDefault()
 
-        this.setState({
-            ...this.state,
-            isSubmitSuccess: true
+        this.props.checkoutCart({
+            address: this.state.selectAddress
         })
+        return (
+            <Redirect to="/confirm-payment/" />
+        )
     }
 
     handleChange(e) {
@@ -74,43 +77,38 @@ class Checkout extends Component {
             </tr>
         )
 
-        if (this.state.isSubmitSuccess) {
-            return (<Redirect to="/confirm-payment/" />)
-        }
-
-
         return (
             <div className='row col-md-12'>
                 <h1>Checkout</h1>
                 <form className='col-md-12' onSubmit={this.handleSubmit}>
-                <div className='row col-md-12'>
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th>Items</th>
-                                <th>Quantity</th>
-                                <th>Total Price</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {cartList}
-                        </tbody>
-                    </Table>
-                </div>
+                    <div className='row col-md-12'>
+                        <Table responsive>
+                            <thead>
+                                <tr>
+                                    <th>Items</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cartList}
+                            </tbody>
+                        </Table>
+                    </div>
 
-                <div className='row col-md-12'>
-                    <h3>Select Address</h3>
-                    
-                    <Table responsive>
-                        <tbody>
-                            {addressList}
-                        </tbody>
-                    </Table>
-                </div>
+                    <div className='row col-md-12'>
+                        <h3>Select Address</h3>
+                        
+                        <Table responsive>
+                            <tbody>
+                                {addressList}
+                            </tbody>
+                        </Table>
+                    </div>
 
-                <Link className='btn' to='/cart/'>Back to Cart</Link>  
-                <button className='btn btn-info' type='submit'>Confirm Payment - ${totalPrice}</button>
+                    <Link className='btn' to='/cart/'>Back to Cart</Link>  
+                    <button className='btn btn-info' type='submit'>Confirm Payment - ${totalPrice}</button>
                 </form>
             </div>
         )
@@ -124,4 +122,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Checkout)
+const mapDispatchToProps = dispatch => ({
+    checkoutCart: item => dispatch(checkoutCart(item))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

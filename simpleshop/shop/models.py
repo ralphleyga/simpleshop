@@ -11,8 +11,10 @@ ORDER_STATUS = (
     (CANCELED, 'Canceled'),
 )
 
+
+PENDING = 1
 PROCESS_STATUS = (
-    (1, 'pending'),
+    (PENDING, 'pending'),
     (2, 'confirm'),
     (3, 'packaging'),
     (4, 'pickup by logistic'),

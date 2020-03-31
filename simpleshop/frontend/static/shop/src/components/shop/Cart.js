@@ -40,20 +40,19 @@ class Cart extends Component {
                 <h1>My Cart</h1>
 
                 <div className='row col-md-12'>
-                <Table responsive>
-                    <thead>
-                        <tr>
-                            <th>Items</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cartList}
-                    </tbody>
-                </Table>
-                    
+                    <Table responsive>
+                        <thead>
+                            <tr>
+                                <th>Items</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cartList}
+                        </tbody>
+                    </Table>
                 </div>
 
                 <Link className='btn btn-info' to='/checkout/'>Checkout - ${totalPrice}</Link>

@@ -4,48 +4,45 @@ import { connect } from 'react-redux'
 
 class OrderDetail extends Component {
 
-    getOrder() {
-        console.log(this.props.match)
-    }
-
     render() {
-        console.log(this.props)
+
+        const { orders } = this.props
+        const order = orders.find(order => {
+                return order.transaction.transaction_id === this.props.match.params.orderItemID
+            })
+
+        console.log(this.props.match.params.orderItemID)
+        const items = order ? (
+            order.order_items.map(item => {
+                return (
+                    <tr key={item.id}>
+                        <td><Link to="/products/1">{item.title}</Link></td>
+                        <td>{item.quantity}</td>
+                        <td>${item.total_price}</td>
+                    </tr>
+                )
+            })
+        ) : (
+            null
+        )
 
         return (
             <div className="col-md-12">
-                <h3>Order: #2343331</h3>
+                <h3>Transaction ID: #{order ? order.transaction.transaction_id : null}</h3>
                 
                 <div className="col-md-12">
-                    <p className='row'>Total Price: $10,000.00</p>
+                    <p className='row'>Total Price: ${order ? order.transaction.price : null}</p>
 
                     <table className="table">
                         <thead>
                         <tr>
-                            <th>#</th>
                             <th>Item Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">12</th>
-                                <td><Link to="/products/1">Adidas Super Star</Link></td>
-                                <td>23</td>
-                                <td>$10,000</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">12</th>
-                                <td><Link to="/products/1">Adidas Super Star</Link></td>
-                                <td>23</td>
-                                <td>$10,000</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">12</th>
-                                <td><Link to="/products/1">Adidas Super Star</Link></td>
-                                <td>23</td>
-                                <td>$10,000</td>
-                            </tr>
+                            {items}
                         </tbody>
                     </table>
 

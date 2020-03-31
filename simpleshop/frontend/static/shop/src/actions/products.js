@@ -1,26 +1,18 @@
 import axios from 'axios'
 
 export const productFetch = () => {
-    return dispatch => {
-        return axios.get('products/')
-            .then(resp => {
-                dispatch({type: 'FETCH_PRODUCTS', payload: resp.data })
-            })
-            .catch((err) => {
-                // add error handler
-            });
+    return async dispatch => {
+        let resp = await axios.get('products')
+        let { data } = resp.data;
+        return dispatch({type: 'FETCH_PRODUCTS', payload: resp.data })
     }
 }
 
 export const categoryFetch = () => {
-    return dispatch => {
-        return axios.get('categories/')
-                .then(resp => {
-                    dispatch({type: 'FETCH_CATEGORY', payload: resp.data})
-                })
-                .catch((err) => {
-                    // add error handler
-                })
+    return async dispatch => {
+        let resp =  await axios.get('categories/')
+        let { data } = resp.data
+        return dispatch({type: 'FETCH_CATEGORY', payload: resp.data})
     }
 }
 
@@ -68,5 +60,19 @@ export const updateCart = item => {
                             dispatch({type: 'FETCH_ORDERS', payload: resp.data})
                         })
                 })
+    }
+}
+
+export const checkoutCart = item => {
+    return dispatch => {
+        return axios.post('checkout/', {
+            address: item.address,
+            payment_method: 1 // COD
+            }).then(resp => {
+                axios.get('orders/')
+                    .then(resp => {
+                        dispatch({type: 'FETCH_ORDERS', payload: resp.data})
+                    })
+            })
     }
 }

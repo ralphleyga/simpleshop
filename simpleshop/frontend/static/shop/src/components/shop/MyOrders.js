@@ -7,7 +7,6 @@ class MyOrder extends Component {
     render() {
 
         const { orders } = this.props
-        console.log(orders)
         let orderList = orders ? (
             orders.map(order => {
                 return (

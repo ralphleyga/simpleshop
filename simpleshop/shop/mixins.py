@@ -8,7 +8,8 @@ from .models import (
         Item,
         Address,
         BAG,
-        PLACED_ORDER
+        PLACED_ORDER,
+        PENDING
     )
 
 class OrderMixin(object):
@@ -50,9 +51,9 @@ class OrderMixin(object):
         transaction.payment_method = payment_method
         transaction.save()
         order.status = PLACED_ORDER
+        order.process_status = PENDING
         order.address = Address.objects.get(id=address)
         order.save()
-        # self.user_cart(user)
         return order
 
 
