@@ -7,7 +7,7 @@ const initState = {
     addresses: []
 }
 
-const updateOrders = (state = initState, action) => {
+const fetchOrders = (state = initState, action) => {
     const cart = 1
     const placed_order = 2
     const canceled = 3
@@ -47,13 +47,18 @@ const productReducer = (state = initState, action) => {
                 categories: action.payload
             }
         case 'FETCH_ORDERS':
-            return updateOrders(state, action)
+            return fetchOrders(state, action)
         case 'FETCH_ADDRESSES':
             return {
                 ...state,
                 addresses: action.payload.results
             }
         case 'CART_ADD_ITEM':
+            return {
+                ...state,
+                cart: action.payload
+            }
+        case 'CART_UPDATE_ITEM':
             return {
                 ...state,
                 cart: action.payload

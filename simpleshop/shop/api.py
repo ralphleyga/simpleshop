@@ -20,8 +20,10 @@ from .models import (
     Product,
     Address,
     Order,
+    OrderItem,
     Item,
     Category,
+    BAG
     )
 
 
@@ -61,6 +63,13 @@ class CheckoutView(OrderMixin, viewsets.ViewSet):
         order_serializer = OrderSerializer(cart)
         return Response(order_serializer.data)
 
+
+class CartUpdateViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderItemSerializer
+    queryset = OrderItem.objects.all()
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(cart__user=self.request.user, cart__status=BAG)
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

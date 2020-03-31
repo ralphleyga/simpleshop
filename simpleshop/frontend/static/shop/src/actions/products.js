@@ -56,3 +56,17 @@ export const addCart = item => {
                 })
     }
 }
+
+export const updateCart = item => {
+    return dispatch => {
+        return axios.put('cart-update/' + item.id + '/', {
+                    quantity: item.quantity
+                })
+                .then(resp => {
+                    axios.get('orders/')
+                        .then(resp => {
+                            dispatch({type: 'FETCH_ORDERS', payload: resp.data})
+                        })
+                })
+    }
+}

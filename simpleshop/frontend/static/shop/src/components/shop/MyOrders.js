@@ -1,8 +1,32 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class MyOrder extends Component {
+
     render() {
+
+        const { orders } = this.props
+        console.log(orders)
+        let orderList = orders ? (
+            orders.map(order => {
+                return (
+                    <tr key={order.id}>
+                        <th scope="row">
+                            {order.transaction.transaction_id}
+                        </th>
+                        <td>Dec-12-2020</td>
+                        <td>56</td>
+                        <td>Pending</td>
+                        <td>$10,000.00</td>
+                    </tr>)
+            })
+        ) : (
+            <tr>
+                <td>No Orders</td>
+            </tr>
+        )
+
         return (
             <section className="col-md-12">
             <div className="col-md-12">
@@ -12,7 +36,7 @@ class MyOrder extends Component {
             <table className="table">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th>Transaction ID</th>
                     <th>Date</th>
                     <th>Number of Items</th>
                     <th>Status</th>
@@ -20,39 +44,7 @@ class MyOrder extends Component {
                 </tr>
                 </thead>
                 <tbody>
-
-                    <tr>
-                        <th scope="row">12</th>
-                        <td><Link to='/my-orders/1'>Dec-12-2020</Link></td>
-                        <td>56</td>
-                        <td>Pending</td>
-                        <td>$10,000.00</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">12</th>
-                        <td><Link to='/my-orders/1'>Dec-12-2020</Link></td>
-                        <td>56</td>
-                        <td>Pending</td>
-                        <td>$10,000.00</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">12</th>
-                        <td><Link to='/my-orders/1'>Dec-12-2020</Link></td>
-                        <td>56</td>
-                        <td>Pending</td>
-                        <td>$10,000.00</td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">12</th>
-                        <td><Link to='/my-orders/1'>Dec-12-2020</Link></td>
-                        <td>56</td>
-                        <td>Pending</td>
-                        <td>$10,000.00</td>
-                    </tr>
-
+                    {orderList}
                 </tbody>
             </table>
             </section>
@@ -60,4 +52,10 @@ class MyOrder extends Component {
     }
 }
 
-export default MyOrder
+const mapStateToProps = (state) => {
+    return {
+        orders: state.productReducer.placed_order
+    }
+} 
+
+export default connect(mapStateToProps)(MyOrder)

@@ -17,7 +17,6 @@ class Checkout extends Component {
 
     handleSubmit(e) {
         e.preventDefault()
-        console.log('submit')
 
         this.setState({
             ...this.state,

@@ -20,12 +20,7 @@ const PrivateLink = ({ children, ...rest}) => {
 class Header extends Component {
     constructor(props) {
         super(props)
-        this.handleDropMenu = this.handleDropMenu.bind(this)
         this.handleLogout = this.handleLogout.bind(this)
-    }
-
-    handleDropMenu(e) {
-        console.log(this)
     }
 
     handleLogout(e) {
@@ -65,7 +60,7 @@ class Header extends Component {
                                     My Account
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu onClick={this.handleDropMenu}>
+                                <Dropdown.Menu>
                                     <Dropdown.Item as={Link} to='/my-orders/'>My Orders</Dropdown.Item>
 
                                     <Dropdown.Item as={Link} to='/my-address/'>My Address</Dropdown.Item>
