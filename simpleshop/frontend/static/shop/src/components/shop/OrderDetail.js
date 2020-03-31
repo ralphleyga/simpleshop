@@ -7,11 +7,7 @@ class OrderDetail extends Component {
     render() {
 
         const { orders } = this.props
-        const order = orders.find(order => {
-                return order.transaction.transaction_id === this.props.match.params.orderItemID
-            })
-
-        console.log(this.props.match.params.orderItemID)
+        const order = orders.find(order => order.transaction.transaction_id === this.props.match.params.orderItemID)
         const items = order ? (
             order.order_items.map(item => {
                 return (

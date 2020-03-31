@@ -6,11 +6,7 @@ class ProductList extends Component {
 
         const { products } = this.props
         const productList = products ? (
-            products.map(product => {
-                return (
-                    <ProductSummary product={product} key={product.id} />
-                )
-            })
+            products.map(product => <ProductSummary product={product} key={product.id} />)
         ) : (
             <div className="center">No Products</div>
         )

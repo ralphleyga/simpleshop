@@ -25,9 +25,7 @@ class Cart extends Component {
             totalPrice = orders.total_price
             // iterate cart items
             cartList = orders.order_items ? (
-                orders.order_items.map(order => {
-                    return <CartItem key={order.id} order={order}/>
-                })
+                orders.order_items.map(order => <CartItem key={order.id} order={order}/>)
             ) : (
                 <tr>
                     <td>No ordered items.</td>

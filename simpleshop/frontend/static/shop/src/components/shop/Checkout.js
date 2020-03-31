@@ -44,9 +44,7 @@ class Checkout extends Component {
             totalPrice = orders.total_price
             // iterate cart items
             cartList = orders.order_items ? (
-                orders.order_items.map(order => {
-                    return <CartItem key={order.id} order={order} disabled='true'/>
-                })
+                orders.order_items.map(order => <CartItem key={order.id} order={order} disabled='true'/>)
             ) : (
                 <tr>
                     <td>No Orders</td>

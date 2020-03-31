@@ -10,9 +10,7 @@ class ProductDetail extends Component {
         const {productID} = this.props.match.params
         const {products} = this.props
         const productItem = products ? (
-                products.find(product => {
-                return product.id === parseInt(productID)
-            })
+                products.find(product => product.id === parseInt(productID))
         ) : (
             <p>Loading...</p>
         )
