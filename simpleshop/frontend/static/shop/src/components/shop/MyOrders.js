@@ -13,12 +13,12 @@ class MyOrder extends Component {
                 return (
                     <tr key={order.id}>
                         <th scope="row">
-                            {order.transaction.transaction_id}
+                            <Link to={'/my-orders/' + order.transaction.transaction_id}>{order.transaction.transaction_id}</Link>
                         </th>
-                        <td>Dec-12-2020</td>
-                        <td>56</td>
-                        <td>Pending</td>
-                        <td>$10,000.00</td>
+                        <td>{order.transaction.created_at}</td>
+                        <td>{order.total_items}</td>
+                        <td>{order.process_status}</td>
+                        <td>${order.transaction.price}</td>
                     </tr>)
             })
         ) : (
@@ -56,6 +56,6 @@ const mapStateToProps = (state) => {
     return {
         orders: state.productReducer.placed_order
     }
-} 
+}
 
 export default connect(mapStateToProps)(MyOrder)

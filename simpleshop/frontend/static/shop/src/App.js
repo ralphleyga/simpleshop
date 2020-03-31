@@ -18,19 +18,14 @@ import { connect } from 'react-redux'
 import { productFetch, categoryFetch, ordersFetch, addressFetch} from './actions/products'
 
 
-const PrivateRoute = ({ children, ...rest }) => {
+const PrivateRoutes = ({ children, ...rest }) => {
     // redirect to login
     return (
-        <Route
-        {...rest}
-        render={({ location }) =>
-            localStorage.getItem('isLoggedIn') ? (
+        localStorage.getItem('isLoggedIn') ? (
                 children
           ) : (
             <Redirect to='/login/' />
           )
-        }
-      />
     )
 }
 
@@ -61,19 +56,13 @@ class App extends Component {
                         </Route>
 
                         
-                        <PrivateRoute exact path='/my-orders/'>
-                            <MyOrders />
-                        </PrivateRoute>
+                        <PrivateRoutes>
+                            <Route exact path='/my-orders/' component={MyOrders} />
+                            <Route exact path='/my-orders/:orderItemID' component={OrderDetail} />
+                            <Route exact path='/confirm-payment/' component={ConfirmPayment} />
 
-                        <PrivateRoute exact path='/my-orders/:orderItemID'>
-                            <OrderDetail />
-                        </PrivateRoute>
-
-                        <PrivateRoute exact path='/checkout/'>
-                            <Checkout />
-                        </PrivateRoute>
-
-                        <Route exact path='/confirm-payment/' component={ConfirmPayment} />
+                            <Route exact path='/checkout/' component={Checkout} />
+                        </PrivateRoutes>
 
                         <Route path='*'>
                             <NoMatch />

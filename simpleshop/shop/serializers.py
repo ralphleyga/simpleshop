@@ -59,10 +59,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     order_items = serializers.SerializerMethodField()
     total_price = serializers.SerializerMethodField()
+    total_items = serializers.SerializerMethodField()
     transaction = serializers.SerializerMethodField()
+    process_status = serializers.SerializerMethodField()
+    
+    def get_process_status(self, instance):
+        return instance.get_process_status_display()
 
     def get_total_price(self, instance):
         return instance.total_prices()
+    
+    def get_total_items(self, instance):
+        return instance.total_items()
 
     def get_order_items(self, instance):
         serializer = OrderItemSerializer(instance.orderitem_set.select_related('item').all(), many=True)
@@ -94,6 +102,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    created_at = serializers.SerializerMethodField()
+    
+    def get_created_at(self, instance):
+        return instance.created_at.date()
+
     class Meta:
         model = Transaction
         fields = '__all__'

@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class OrderDetail extends Component {
+
+    getOrder() {
+        console.log(this.props.match)
+    }
+
     render() {
+        console.log(this.props)
+
         return (
             <div className="col-md-12">
-                <h1>Order: #2343331</h1>
+                <h3>Order: #2343331</h3>
                 
                 <div className="col-md-12">
-                    <h4 className='row'>Total Price: $10,000.00</h4>
+                    <p className='row'>Total Price: $10,000.00</p>
 
                     <table className="table">
                         <thead>
@@ -47,4 +55,10 @@ class OrderDetail extends Component {
     }
 }
 
-export default OrderDetail
+const mapStateToProps = (state) => {
+    return {
+        orders: state.productReducer.placed_order
+    }
+}
+
+export default connect(mapStateToProps)(OrderDetail)
