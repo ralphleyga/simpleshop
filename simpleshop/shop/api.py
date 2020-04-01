@@ -41,6 +41,14 @@ class AddressViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, **kwargs):
         return self.queryset.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        self.get_queryset().update(default=False)
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        self.get_queryset().update(default=False)
+        serializer.save(user=self.request.user)
 
 
 class CartView(OrderMixin, viewsets.ViewSet):
@@ -70,6 +78,7 @@ class CartUpdateViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return super().get_queryset().filter(cart__user=self.request.user, cart__status=BAG)
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

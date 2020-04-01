@@ -16,6 +16,7 @@ import ConfirmPayment from './components/shop/ConfirmPayment'
 import NoMatch from './components/shop/NoMatch'
 import { connect } from 'react-redux'
 import { productFetch, categoryFetch, ordersFetch, addressFetch} from './actions/products'
+import AddressList from './components/shop/AddressList';
 
 
 const PrivateRoutes = ({ children, ...rest }) => {
@@ -62,6 +63,7 @@ class App extends Component {
                             <Route exact path='/confirm-payment/' component={ConfirmPayment} />
 
                             <Route exact path='/checkout/' component={Checkout} />
+                            <Route exact path='/my-address/' component={AddressList} />
                         </PrivateRoutes>
 
                         <Route path='*'>

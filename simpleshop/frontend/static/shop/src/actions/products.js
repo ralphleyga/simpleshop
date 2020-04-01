@@ -21,13 +21,6 @@ export const ordersFetch = () => {
     }
 }
 
-export const addressFetch = () => {
-    return async dispatch => {
-        let resp = await axios.get('address/')
-        return dispatch({type: 'FETCH_ADDRESSES', payload: resp.data})
-    }
-}
-
 export const addCart = item => {
     return async dispatch => {
         let resp = await axios.post('cart/', {
@@ -44,7 +37,7 @@ export const updateCart = item => {
                     quantity: item.quantity
                 })
         let resp = await axios.get('orders/')
-        return  dispatch({type: 'FETCH_ORDERS', payload: resp.data})
+        return dispatch({type: 'FETCH_ORDERS', payload: resp.data})
     }
 }
 
@@ -57,5 +50,33 @@ export const checkoutCart = item => {
         // pull latest orders data
         let resp = axios.get('orders/')
         return dispatch({type: 'FETCH_ORDERS', payload: resp.data})
+    }
+}
+
+export const addressFetch = () => {
+    return async dispatch => {
+        let resp = await axios.get('address/')
+        return dispatch({type: 'FETCH_ADDRESSES', payload: resp.data})
+    }
+}
+
+export const addressUpdate = (address) => {
+    return async dispatch => {
+        if (address.id) {
+            await axios.put('address/' + address.id + '/', address)
+        } else {
+            await axios.post('address/', address)
+        }
+
+        let resp = await axios.get('address/')
+        return dispatch({type: 'FETCH_ADDRESSES', payload: resp.data})
+    }
+}
+
+export const addressDelete = (address) => {
+    return async dispatch => {
+        await axios.delete('address/' + address.id + '/')
+        let resp = await axios.get('address/')
+        return dispatch({type: 'FETCH_ADDRESSES', payload: resp.data})
     }
 }

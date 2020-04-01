@@ -12,15 +12,16 @@ class CartItem extends Component {
     }
 
     handleChange(e) {
+        let quantity = e.target.value
         this.setState({
             ...this.state,
-            [e.target.name]: e.target.value
+            [e.target.name]: quantity
         });
 
-        if (e.target.value) {
+        if (quantity) {
             this.props.updateCart({
                 id: this.props.order.id,
-                quantity: e.target.value
+                quantity: quantity
             })
         }
     }
@@ -33,7 +34,7 @@ class CartItem extends Component {
                     <Link to={'/products/' + order.product_id} >{order.title}</Link>
                 </td>
                 <td>
-                    <input type="number" required className='col-md-2 form-control' defaultValue={order.quantity} onChange={this.handleChange} disabled={this.props.disabled ? true : false}/>
+                    <input type="number" required className='col-md-2 form-control' defaultValue={order.quantity} onChange={this.handleChange} disabled={this.props.disabled ? true : false} name='cartQuantity'/>
                 </td>
                 <td>$ {order.total_price}</td>
                 <td></td>
