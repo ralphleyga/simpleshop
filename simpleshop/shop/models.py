@@ -57,6 +57,9 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
+class GenericManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(archived=False)
 
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -65,6 +68,12 @@ class Address(models.Model):
     apartment_address = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=100)
     default = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
+    objects = GenericManager()
+    
+    def delete(self):
+        self.archived = True
+        super().save()
 
     def __str__(self):
         return self.full_address()
@@ -76,7 +85,7 @@ class Address(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                 on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, null=True, on_delete=models.DO_NOTHING)
     status = models.IntegerField(choices=ORDER_STATUS)
     process_status = models.IntegerField(choices=PROCESS_STATUS, blank=True, null=True)
     total_price = 0
