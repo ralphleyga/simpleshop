@@ -11,11 +11,12 @@ class CategoryList extends Component {
         const { categories } = this.props
         const search = window.location.search
         const params = new URLSearchParams(search)
+        console.log(search)
 
         const categoryList = categories ? (
             categories.map((category) => {
                 return (
-                        <ListGroup.Item action as={Link} to={'/products/?category=' + category.id} className={(params.get('category') == category.id) ? 'active': null}>
+                        <ListGroup.Item action as={Link} to={'/products/?category=' + category.id} className={(params.get('category') == category.id) ? 'active': null} key={category.id}>
                             {category.name}
                         </ListGroup.Item>
                 )
