@@ -15,7 +15,7 @@ class CategoryList extends Component {
         const categoryList = categories ? (
             categories.map((category) => {
                 return (
-                        <ListGroup.Item action href={"?category=" + category.id} as={Link} to={'/products/?category=' + category.id} className={(params.get('category') == category.id) ? 'active': null}>
+                        <ListGroup.Item action as={Link} to={'/products/?category=' + category.id} className={(params.get('category') == category.id) ? 'active': null}>
                             {category.name}
                         </ListGroup.Item>
                 )
@@ -26,7 +26,7 @@ class CategoryList extends Component {
 
         return categories ? (
             <ListGroup>
-                <ListGroup.Item action href="#link1" as={Link} to='/products/' className={(params.get('category') == null) ? 'active': null}>
+                <ListGroup.Item action as={Link} to='/products/' className={(params.get('category') == null) ? 'active': null}>
                 All</ListGroup.Item>
                 {categoryList}
             </ListGroup>
