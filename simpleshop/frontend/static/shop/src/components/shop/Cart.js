@@ -32,6 +32,8 @@ class Cart extends Component {
                 </tr>
             )
         }
+
+        const checkoutBtn = totalPrice ? <Link className='btn btn-info' to='/checkout/'>Checkout - ${totalPrice}</Link> : null
         
         return (
             <div className='row col-md-12'>
@@ -53,7 +55,7 @@ class Cart extends Component {
                     </Table>
                 </div>
 
-                <Link className='btn btn-info' to='/checkout/'>Checkout - ${totalPrice}</Link>
+                {checkoutBtn}
             </div>
         )
     }

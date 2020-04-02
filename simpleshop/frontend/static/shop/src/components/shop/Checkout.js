@@ -20,11 +20,13 @@ class Checkout extends Component {
         e.preventDefault()
 
         this.props.checkoutCart({
-            address: this.state.selectAddress
+            address: this.state.selectAddress,
         })
-        return (
-            <Redirect to="/confirm-payment/" />
-        )
+
+        this.setState({
+            ...this.state,
+            isSubmitSuccess: true
+        });
     }
 
     handleChange(e) {
@@ -75,6 +77,25 @@ class Checkout extends Component {
             </tr>
         )
 
+        const checkoutBtn = totalPrice ? (
+            <>
+                <div className='row col-md-12'>
+                    <h3>Select Address</h3>
+                    
+                    <Table responsive>
+                        <tbody>
+                            {addressList}
+                        </tbody>
+                    </Table>
+                </div>
+
+                <Link className='btn' to='/cart/'>Back to Cart</Link>  
+                <button className='btn btn-info' type='submit'>Confirm Payment - ${totalPrice}</button>
+            </>
+        ) : null
+
+        if (this.state.isSubmitSuccess) return (<Redirect to='/confirm-payment/' />)
+
         return (
             <div className='row col-md-12'>
                 <h1>Checkout</h1>
@@ -95,18 +116,7 @@ class Checkout extends Component {
                         </Table>
                     </div>
 
-                    <div className='row col-md-12'>
-                        <h3>Select Address</h3>
-                        
-                        <Table responsive>
-                            <tbody>
-                                {addressList}
-                            </tbody>
-                        </Table>
-                    </div>
-
-                    <Link className='btn' to='/cart/'>Back to Cart</Link>  
-                    <button className='btn btn-info' type='submit'>Confirm Payment - ${totalPrice}</button>
+                    {checkoutBtn}
                 </form>
             </div>
         )
