@@ -80,7 +80,7 @@ class Header extends Component {
                         { mainNav }
                         { externalNav }
                     </ul>
-                    <Search />
+                    <Search/>
                 </div>
             </div>
         )

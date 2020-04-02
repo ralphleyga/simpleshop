@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .mixins import OrderMixin
 
@@ -32,7 +33,9 @@ class BrowseProductsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = (AllowAny,)
-    filterset_fields = ['title', 'description']
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['title', 'description']
+    filterset_fields = ['category',]
 
 
 class AddressViewSet(viewsets.ModelViewSet):

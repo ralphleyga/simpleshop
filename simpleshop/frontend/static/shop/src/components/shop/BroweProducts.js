@@ -1,10 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import axios from 'axios'
 
 import ProductList from './ProductList'
 import CategoryList from './CategoryList'
 
 class BrowseProducts extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            products: [],
+            isSearch: false,
+            searchFilters: {}
+        }
+    }
+
+    categoryFilter(categoryID, productList) {
+        if (categoryID && productList) {
+            productList = productList.filter(product => {
+                return product.category === parseInt(categoryID)
+            })
+        }
+        return productList
+    }
 
     render() {
         const search = window.location.search
@@ -12,11 +31,9 @@ class BrowseProducts extends Component {
         const categoryID = params.get('category')
         let productList = this.props.products.results
 
-        if (categoryID && productList) {
-            productList = productList.filter(product => {
-                return product.category === parseInt(categoryID)
-            })
-        }
+        // filter by category
+        productList = this.categoryFilter(categoryID, productList)
+
 
         return (
 
