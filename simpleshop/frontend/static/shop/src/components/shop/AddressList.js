@@ -16,7 +16,7 @@ const AddressModal = (props) => {
         <Modal show={props.show} onHide={handleClose}>
             <form onSubmit={handleSubmit(props.onSubmit)}>
                 <Modal.Header closeButton>
-                <Modal.Title>{address ? 'Update Address': 'Add New Address'}</Modal.Title>
+                    <Modal.Title>{address ? 'Update Address': 'Add New Address'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group>
@@ -45,26 +45,56 @@ const AddressModal = (props) => {
 
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" type='submit'>
-                    Save Changes
-                </Button>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" type='submit'>
+                        Save Changes
+                    </Button>
                 </Modal.Footer>
             </form>
         </Modal>
         )
-} 
+}
+
+const AddressDeleteModal = (props) => {
+    const address = props.address
+
+    const confirmDelete = () => {
+        props.addressDelete({
+            ...address
+        })
+        props.onHide()
+    }
+    return address ? (
+        <Modal show={props.show} onHide={props.onHide}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Address</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                Are you sure you want to delete "{address.full_address}"
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={props.onHide}>
+                    Close
+                </Button>
+                <Button variant="danger" type='submit' onClick={confirmDelete}>
+                    Confirm Delete
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    ) : null
+
+}
 
 class AddressList extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            show: false,
-            setShow: false,
-            addressForm: {}
+            modalAddressForm: false,
+            modalAddressDelete: false,
+            addressForm: {},
         }
         this.handleClose = this.handleClose.bind(this)
         this.handleUpdateAddress = this.handleUpdateAddress.bind(this)
@@ -76,15 +106,16 @@ class AddressList extends Component {
     handleClose() {
         this.setState({
             ...this.state,
-            show: false
+            modalAddressForm: false,
+            modalAddressDelete: false
         })
     }
 
     handleUpdateAddress(addressForm) {
         this.setState({
             ...this.state,
-            show: true,
-            addressForm: addressForm
+            modalAddressForm: true,
+            addressForm: addressForm,
         })
     }
 
@@ -98,16 +129,18 @@ class AddressList extends Component {
     handleAddAddress() {
         this.setState({
             ...this.state,
-            show: true,
+            modalAddressForm: true,
             addressForm: null
         })
     }
 
     handleDeleteAddress(address) {
-        this.props.addressDelete({
-            ...address
+        this.setState({
+            ...this.state,
+            modalAddressDelete: true,
+            addressForm: address,
         })
-        this.handleClose()
+
     }
 
     render() {
@@ -138,7 +171,10 @@ class AddressList extends Component {
                         {addressList}
                     </tbody>
                 </Table>
-                <AddressModal show={this.state.show} onHide={this.handleClose} onSubmit={this.onSubmit} address={this.state.addressForm}/>
+
+                <AddressModal show={this.state.modalAddressForm} onHide={this.handleClose} onSubmit={this.onSubmit} address={this.state.addressForm}/>
+
+                <AddressDeleteModal show={this.state.modalAddressDelete} onHide={this.handleClose}  address={this.state.addressForm} addressDelete={this.props.addressDelete}/>
             </div>
             )
     }

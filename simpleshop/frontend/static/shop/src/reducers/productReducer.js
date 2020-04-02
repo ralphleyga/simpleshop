@@ -12,11 +12,8 @@ const fetchOrders = (state = initState, action) => {
     const placed_order = 2
     const canceled = 3
 
-    const cartList = action.payload ? action.payload.results.find(order => {
-        return order.status === cart
-    }) : []
+    const cartList = action.payload ? action.payload.results.find(order => order.status === cart) : []
 
-    console.log(action.payload)
     const placedOrderList = action.payload ? action.payload.results.filter(order => {
         return order.status === placed_order
     }) : []
