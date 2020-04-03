@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
 
 const FilterForm = (props) => {
@@ -9,7 +10,7 @@ const FilterForm = (props) => {
     const { categories } = props
     const activeFilter = {
             categories: params.get('category') ? params.get('category').split(',') : [],
-            keywords: params.get('keywords') ?  params.get('keywords') : ''
+            search: params.get('search') ?  params.get('search') : ''
         }
 
     const isDefault = (categoryID) => {
@@ -34,9 +35,9 @@ const FilterForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit(props.onSubmit)}>
-            <input type='text' className='form-control mb-2' name='keywords' placeholder='Search...' onChange={props.onChange} ref={register} defaultValue={activeFilter.keywords}/>
-
-            <ListGroup>
+            <input type='text' className='form-control mb-2' name='search' placeholder='Search...' onChange={props.onChange} ref={register} defaultValue={activeFilter.search}/>
+            <Button type='submit' block>Go</Button>
+            <ListGroup className='mt-2'>
                 {categoryList}
             </ListGroup>
         </form>

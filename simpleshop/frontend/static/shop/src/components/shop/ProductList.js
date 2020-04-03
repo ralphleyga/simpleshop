@@ -8,7 +8,7 @@ class ProductList extends Component {
         const productList = products ? (
             products.map(product => <ProductSummary product={product} key={product.id} />)
         ) : (
-            <div className="center">No Products</div>
+            <div className="center col-md-12">No Products</div>
         )
 
 
