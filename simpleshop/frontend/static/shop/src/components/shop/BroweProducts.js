@@ -16,6 +16,8 @@ class BrowseProducts extends Component {
             searchFilters: {}
         }
         this.onSubmit = this.onSubmit.bind(this)
+        const search = window.location.search
+        this.search = search
     }
 
     setParams(data) {
@@ -26,11 +28,12 @@ class BrowseProducts extends Component {
 
     onSubmit(data) {
         const params = this.setParams(data)
-        this.searchFilter(params)
+        this.searchFilter('?' + params)
     }
 
     searchFilter = async (data) => {
-        let resp = await axios.get(`products/?${data}`)
+        let resp = await axios.get(`products/${data}`)
+        console.log(resp.data.results)
         this.setState({
             ...this.state,
             products: resp.data.results
@@ -38,15 +41,18 @@ class BrowseProducts extends Component {
     }
 
     componentDidMount() {
-        const search = window.location.search
-        console.log(this.props.products.results)
-        if (search) {
-            this.searchFilter(search)
+        if (this.search) {
+            this.searchFilter(this.search)
         }
     }
 
     render() {
-        let productList = this.state.products.length ? this.state.products : this.props.products.results
+        let productList = []
+        if (this.search) {
+            productList = this.state.products
+        } else {
+            productList = this.state.products.length ? this.state.products : this.props.products.results
+        }
 
         return (
             <section className='row'>
