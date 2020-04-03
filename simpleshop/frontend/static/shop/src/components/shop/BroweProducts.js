@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import history from '../../history'
 
 import ProductList from './ProductList'
-import CategoryList from './CategoryList'
+import ProductFilter from './ProductFilter'
 
 class BrowseProducts extends Component {
 
@@ -14,33 +15,27 @@ class BrowseProducts extends Component {
             isSearch: false,
             searchFilters: {}
         }
+        this.onSubmit = this.onSubmit.bind(this)
     }
 
-    categoryFilter(categoryID, productList) {
-        if (categoryID && productList) {
-            productList = productList.filter(product => {
-                return product.category === parseInt(categoryID)
-            })
-        }
-        return productList
+    setParams(data) {
+        let params = new URLSearchParams(data).toString()
+        history.push(`/products/?${params}`)
+    }
+
+    onSubmit(data) {
+        this.setParams(data)
     }
 
     render() {
-        const search = window.location.search
-        const params = new URLSearchParams(search)
-        const categoryID = params.get('category')
         let productList = this.props.products.results
-
-        // filter by category
-        productList = this.categoryFilter(categoryID, productList)
-
 
         return (
 
             <section className='row'>
                 <div className="col-md-2">
-                    <h3>Filters</h3>
-                    <CategoryList categories={this.props.categories.results} />
+                    <h4>Filters</h4>
+                    <ProductFilter categories={this.props.categories.results} onSubmit={this.onSubmit} />
                 </div>
                 <div className="col-md-10">
                     <h3>Browse Producst</h3>

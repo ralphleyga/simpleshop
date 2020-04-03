@@ -7,7 +7,7 @@ class Search extends Component {
         this.onSubmit = this.onSubmit.bind(this)
         this.onChange = this.onChange.bind(this)
         this.state = {
-            search: ''
+            keywords: ''
         }
     }
 
@@ -16,16 +16,16 @@ class Search extends Component {
         const params = new URLSearchParams(this.state).toString()
         this.setState({
             ...this.state,
-            search: ''
+            keywords: ''
         })
-        history.push(`/products/?${params}`);
+        window.location.href = `/products/?${params}`;
         
     }
 
     onChange(e) {
         this.setState({
             ...this.state,
-            search: e.target.value
+            keywords: e.target.value
         })
     }
 
@@ -33,7 +33,7 @@ class Search extends Component {
 
         return (
             <form className='form-inline my-2 my-log-0' onSubmit={this.onSubmit}>
-                <input className='form-control mr-sm-2' type='text' placeholder='Search' name='search' onChange={this.onChange} value={this.state.search} />
+                <input className='form-control mr-sm-2' type='text' placeholder='Search' name='keywords' onChange={this.onChange} value={this.state.search} />
                 <button className='btn btn-outline-success my-2 my-sm-0' type='submit'>Search</button>
             </form>
         )
